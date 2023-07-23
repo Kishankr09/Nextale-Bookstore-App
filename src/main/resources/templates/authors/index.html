@@ -1,28 +1,75 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head> 
-    <title>Nextale: Author Index</title> 
+  <head>
+    <title>Nextale: Author Index</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <link rel="stylesheet" th:href="@{/css/style.build.tailwind.css}">
-</head>
-<body>
+    <link rel="stylesheet" th:href="@{/css/style.build.tailwind.css}" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+  </head>
+  <body>
     <div th:insert="~{commons/header :: header}"></div>
     <header class="bg-white shadow">
-        <div class="mx-auto max-w-7xl py-6 px-4 sm:px-6 lg:px-8">
-            <h1 class="text-3xl font-bold tracking-tight text-gray-900">Authors</h1>
-        </div>
+      <div class="mx-auto max-w-7xl py-6 px-4 sm:px-6 lg:px-8">
+        <h1 class="text-3xl font-bold tracking-tight text-gray-900">Authors</h1>
+      </div>
     </header>
     <main>
-        <div class="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
-            <div id="authors" class="min-w-full">
-                <div class="grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
-                    <div th:each="author: ${authors}">
-                        <div th:insert="~{authors/_author_component :: author_component}"></div>
-                        <a href="#" th:href="@{'/author/' + ${author.id}}">See author details</a>
-                    </div>
-                </div>
+      <div class="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
+        <div id="authors" class="min-w-full">
+          <div
+            class="grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8"
+          >
+            <div th:each="author: ${authors}">
+              <div
+                th:insert="~{authors/_author_component :: author_component}"
+              ></div>
+              <a href="#" th:href="@{'/author/' + ${author.id}}"
+                >See author details</a
+              >
             </div>
+          </div>
         </div>
+      </div>
     </main>
-</body>
+
+    <!-- Pagination -->
+    <div class="mx-auto max-w-7xl py-4 px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between">
+        <div>
+          <span class="text-gray-700">Show</span>
+          <div
+            th:insert="~{pagination/_pagination_component :: pagination_component}"
+          ></div>
+          <span class="text-gray-700">entries</span>
+        </div>
+        <div>
+          <ul class="flex justify-center">
+            <li class="mx-1">
+              <a
+                th:if="${currentPage > 1}"
+                th:href="@{|?pageSize=${selectedPageSize}&page=${currentPage - 1}|}"
+                class="px-4 py-2 bg-blue-500 text-white rounded-md"
+                >Previous</a
+              >
+            </li>
+            <li class="mx-1">
+              <a
+                th:if="${currentPage < totalPages}"
+                th:href="@{|?pageSize=${selectedPageSize}&page=${currentPage + 1}|}"
+                class="px-4 py-2 bg-green-500 text-white rounded-md"
+                >Next</a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <script
+      src="https://code.jquery.com/jquery-1.11.1.min.js"
+      integrity="sha256-VAvG3sHdS5LqTT+5A/aeq/bZGa/Uj04xKxY8KM/w9EE="
+      crossorigin="anonymous"
+    ></script>
+    <script src="../pagination/pagination.js"></script>
+  </body>
 </html>

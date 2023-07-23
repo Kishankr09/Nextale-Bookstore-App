@@ -1,0 +1,12 @@
+<div th:fragment="pagination_component">
+  <div>
+    <select class="form-control pagination" id="pageSizeSelect">
+      <option
+        th:each="pageSize : ${pageSizes}"
+        th:text="${pageSize == -1 ? 'All' : pageSize}"
+        th:value="${pageSize}"
+        th:selected="${pageSize} == ${selectedPageSize}"
+      ></option>
+    </select>
+  </div>
+</div>

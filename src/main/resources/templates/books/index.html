@@ -29,12 +29,7 @@
       <div class="flex justify-between">
         <div>
           <span class="text-gray-700">Show</span>
-          <select class="form-control pagination" id="pageSizeSelect">
-            <option th:each="pageSize : ${pageSizes}" th:text="${pageSize}"
-                th:value="${pageSize}"
-                th:selected="${pageSize} == ${selectedPageSize}"></option>
-        </select>
-
+           <div th:insert="~{pagination/_pagination_component :: pagination_component}"></div>
           <span class="text-gray-700">entries</span>
         </div>
         <div>
@@ -59,47 +54,9 @@
         </div>
       </div>
 
-      <script
-      src="https://code.jquery.com/jquery-1.11.1.min.js"
-      integrity="sha256-VAvG3sHdS5LqTT+5A/aeq/bZGa/Uj04xKxY8KM/w9EE="
-      crossorigin="anonymous"></script>
+      <script src="https://code.jquery.com/jquery-1.11.1.min.js" integrity="sha256-VAvG3sHdS5LqTT+5A/aeq/bZGa/Uj04xKxY8KM/w9EE=" crossorigin="anonymous"></script>
+      <script src="../pagination/pagination.js"></script>
 
-      <script th:inline="javascript">
-        /*<![CDATA[*/
-        $(document).ready(function() {
-          console.log("ready!");
-    changePageAndSize();
-});
-
-function changePageAndSize() {
- $('#pageSizeSelect').change(function(evt) {
-    var url = window.location.href;
-    var pageSizeParam = "pageSize=" + this.value;
-    var pageParam = "page=1";
-    if (url.indexOf('?') !== -1) {
-      // URL already has query string
-      if (url.indexOf('pageSize=') === -1 && url.indexOf('page=') === -1) {
-        // Query string does not have pageSize or page parameters
-        url += "&" + pageSizeParam + "&" + pageParam;
-      } else if (url.indexOf('pageSize=') === -1) {
-        // Query string does not have pageSize parameter
-        url += "&" + pageSizeParam;
-      } else if (url.indexOf('page=') === -1) {
-        // Query string does not have page parameter
-        url += "&" + pageParam;
-      } else {
-        // Query string already has pageSize and page parameters
-        url = url.replace(/pageSize=\d+/, pageSizeParam);
-        url = url.replace(/page=\d+/, pageParam);
-      }
-    } else {
-      // URL does not have query string
-      url += "?" + pageSizeParam + "&" + pageParam;
-    }
-    window.location.href = url;
-  });
-}
-</script>
 </body>
 
 
