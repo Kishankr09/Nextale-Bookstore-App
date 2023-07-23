@@ -18,7 +18,11 @@ public class CommentService {
     public List<Comment> getAllComments() {
         List<Comment> comments = new ArrayList<Comment>();
         commentRepository.findAll().forEach(comment -> comments.add(comment));
-       comments.sort((Comment c1, Comment c2) -> Integer.compare(c2.getRating(), c1.getRating()));
+        
+        comments.sort((Comment c1, Comment c2) -> Integer.compare(c2.getRating(), c1.getRating()));
+        for(Comment ce : comments ){
+            System.out.println(ce.getRating());
+        }
         return (comments);
     }
     

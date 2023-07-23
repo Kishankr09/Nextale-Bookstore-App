@@ -10,6 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OrderBy;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -45,5 +46,8 @@ public class Book {
     private LocalDateTime updatedAt;
 
     @OneToMany(mappedBy = "book")
+    @OrderBy("rating DESC")
     private List<Comment> comments;
+
+
 }
