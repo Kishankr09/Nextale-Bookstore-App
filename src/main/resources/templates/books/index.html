@@ -1,0 +1,106 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head> 
+    <title>Nextale: Book Index</title> 
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" th:href="@{/css/style.tailwind.css}">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+</head>
+
+<body>
+    <div th:insert="~{commons/header :: header}"></div>
+    <header class="bg-white shadow">
+        <div class="mx-auto max-w-7xl py-6 px-4 sm:px-6 lg:px-8">
+            <h1 class="text-3xl font-bold tracking-tight text-gray-900">Books</h1>
+        </div>
+    </header>
+    <main>
+        <div class="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
+            <div id="books" class="min-w-full">
+                <div class="grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
+                    <div th:each="book: ${books}">
+                        <div th:insert="~{books/_book_component :: book_component}"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <div class="mx-auto max-w-7xl py-4 px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between">
+        <div>
+          <span class="text-gray-700">Show</span>
+          <select class="form-control pagination" id="pageSizeSelect">
+            <option th:each="pageSize : ${pageSizes}" th:text="${pageSize}"
+                th:value="${pageSize}"
+                th:selected="${pageSize} == ${selectedPageSize}"></option>
+        </select>
+
+          <span class="text-gray-700">entries</span>
+        </div>
+        <div>
+          <ul class="flex justify-center">
+            <li class="mx-1">
+              <a
+                th:if="${currentPage > 1}"
+                th:href="@{|?pageSize=${selectedPageSize}&page=${currentPage - 1}|}"
+                class="px-4 py-2 bg-blue-500 text-white rounded-md"
+                >Previous</a
+              >
+            </li>
+            <li class="mx-1">
+              <a
+                th:if="${currentPage < totalPages}"
+                th:href="@{|?pageSize=${selectedPageSize}&page=${currentPage + 1}|}"
+                class="px-4 py-2 bg-green-500 text-white rounded-md"
+                >Next</a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <script
+      src="https://code.jquery.com/jquery-1.11.1.min.js"
+      integrity="sha256-VAvG3sHdS5LqTT+5A/aeq/bZGa/Uj04xKxY8KM/w9EE="
+      crossorigin="anonymous"></script>
+
+      <script th:inline="javascript">
+        /*<![CDATA[*/
+        $(document).ready(function() {
+          console.log("ready!");
+    changePageAndSize();
+});
+
+function changePageAndSize() {
+ $('#pageSizeSelect').change(function(evt) {
+    var url = window.location.href;
+    var pageSizeParam = "pageSize=" + this.value;
+    var pageParam = "page=1";
+    if (url.indexOf('?') !== -1) {
+      // URL already has query string
+      if (url.indexOf('pageSize=') === -1 && url.indexOf('page=') === -1) {
+        // Query string does not have pageSize or page parameters
+        url += "&" + pageSizeParam + "&" + pageParam;
+      } else if (url.indexOf('pageSize=') === -1) {
+        // Query string does not have pageSize parameter
+        url += "&" + pageSizeParam;
+      } else if (url.indexOf('page=') === -1) {
+        // Query string does not have page parameter
+        url += "&" + pageParam;
+      } else {
+        // Query string already has pageSize and page parameters
+        url = url.replace(/pageSize=\d+/, pageSizeParam);
+        url = url.replace(/page=\d+/, pageParam);
+      }
+    } else {
+      // URL does not have query string
+      url += "?" + pageSizeParam + "&" + pageParam;
+    }
+    window.location.href = url;
+  });
+}
+</script>
+</body>
+
+
+</html>

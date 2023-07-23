@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Nextale: Book Detail</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" th:href="@{/css/style.build.tailwind.css}" />
+  </head>
+  <body>
+    <div th:insert="~{commons/header :: header}"></div>
+    <main>
+      <div class="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
+        <div class="mx-auto md:w-2/3 w-full flex">
+          <div class="mx-auto">
+            <div th:insert="~{books/_book_component :: book_component}"></div>
+          </div>
+          <div id="suggestions">
+            <h2 class="font-bold text-2xl mt-8">You Might Also Like</h2>
+            <div
+              class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-4"
+            >
+              <div th:each="book: ${books}">
+                <div
+                  th:insert="~{books/_book_component :: book_component}"
+                ></div>
+              </div>
+            </div>
+          </div>
+          <div id="comments">
+            <h2 class="font-bold text-2xl">Add a Comment</h2>
+            <form th:action="@{/api/addcomment}" method="post">
+              <input
+                type="hidden"
+                id="bookId"
+                name="bookId"
+                th:value="${book.id}"
+              />
+              <div class="mt-4">
+                <label for="pseudonyme">Pseudonyme:</label>
+                <input type="text" id="pseudonyme" name="pseudonyme" required />
+              </div>
+              <div class="mt-4">
+                <label for="content">Content:</label>
+                <textarea id="content" name="content" required></textarea>
+              </div>
+              <div class="mt-4">
+                <label for="rating">Rating (1-5):</label>
+                <input
+                  type="number"
+                  id="rating"
+                  name="rating"
+                  min="1"
+                  max="5"
+                  required
+                />
+              </div>
+              <div class="mt-4">
+                <button type="submit">Submit</button>
+              </div>
+            </form>
+
+            <h2 class="font-bold text-2xl mt-8">Comments</h2>
+            <div th:each="comment: ${book.comments}">
+              <div
+                th:insert="~{comments/_comment_component :: comment_component}"
+              ></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>
